@@ -39,7 +39,8 @@ router.post('/', function (req, res, next) {
                     if (!result) {
                         error = "Incorrect Username or Password";
                     } else {
-                        //error = "User already Exists";
+                        //user ok
+                        req.session.user = username;
                     }
                 })
 

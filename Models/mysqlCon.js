@@ -136,7 +136,7 @@ module.exports = {
                 if (result) {
                     return data(true);
                 }
-                return data(false);
+                return data("AAA" + false);
             }
         )
     }
