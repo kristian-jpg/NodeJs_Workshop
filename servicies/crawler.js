@@ -26,7 +26,7 @@ const crawlerModule = module.exports = {
         crawler.filterByDomain = true;
         crawler.scanSubdomains = true;
         crawler.on('discoverycomplete', function (queueitem, resources) {
-            // console.log(resources)
+             //console.log(resources)
             for (let resource in resources) {
                 // const linkStatus = checkLink(resources[resource], domain);
                 try {

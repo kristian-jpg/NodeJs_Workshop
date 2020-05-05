@@ -1,14 +1,13 @@
 var mysql = require('mysql');
-require('dotenv').config({ path: '../.env' })
+require('dotenv').config({path: '../.env'})
 
 
-const  host = process.env.DB_HOST;
+const host = process.env.DB_HOST;
 const user = process.env.DB_USER;
 const password = process.env.DB_PASS;
 
 // const port = process.env.DB_PORT;
 const database = process.env.DB_DB;
-
 
 
 var con = mysql.createConnection({
@@ -25,7 +24,7 @@ module.exports = {
     tableData format:
     {tableName: "me", args: [{col: "a", typeVar: "b"}, {col:"b", typeVar: "c"}]}
  */
-   createTable: (tableData) => {
+    createTable: (tableData) => {
 
         let query1 = "CREATE TABLE " + tableData.tableName + " ( ";
         for (let i in tableData.args) {
@@ -40,7 +39,7 @@ module.exports = {
         con.query(query1, function (err) {
             if (err) throw err;
         });
-        },
+    },
 
     /*
     tabledata format:
@@ -76,7 +75,7 @@ module.exports = {
     /*
        * Table name given
        */
-    selectAll: (tableName, data) =>{
+    selectAll: (tableName, data) => {
         let query1 = "SELECT * FROM `" + tableName + "`";
         console.log(query1);
         return con.query(query1, function (err, result) {
@@ -112,7 +111,7 @@ module.exports = {
     checkTableExists: (table, data) => {
         return con.query("SELECT EXISTS( " +
             "       SELECT * FROM information_schema.tables " +
-            "       WHERE table_schema = 'diploma_project' " +
+            "       WHERE table_schema = '" + database + "' " +
             "       AND table_name = '" + table + "' " +
             ") AS ME", function (err, result) {
             if (err) throw err;
@@ -124,21 +123,20 @@ module.exports = {
     /*tabledata format:
         {tableName: "me", args: [{col: "a", value: "b"}, {col:"b", value: "c"}]}
          */
-    checkRecordExists: (tabledata, data) =>
-    {
+    checkRecordExists: (tabledata, data) => {
         let query1 = "SELECT * FROM " + tabledata.table + " WHERE ";
-        for(let args in tabledata.args){
+        for (let args in tabledata.args) {
             console.log(args);
-            if(args!=0){
+            if (args != 0) {
                 query1 += "AND WHERE ";
             }
-            query1 += tabledata.args[args].col + " = '" + tabledata.args[args].value+"'";
+            query1 += tabledata.args[args].col + " = '" + tabledata.args[args].value + "'";
         }
         return con.query(query1, (err, result) => {
-            if(result){
-                return data(true);
-            }
-            return data(false);
+                if (result) {
+                    return data(true);
+                }
+                return data(false);
             }
         )
     }

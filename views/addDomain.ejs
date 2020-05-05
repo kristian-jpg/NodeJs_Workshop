@@ -1,0 +1,33 @@
+<% include partials/head.ejs %>
+<% include partials/navbar.ejs %>
+<script>
+    $(function () {
+        $("form[name='registration']").validate({
+            rules: {
+                domain: "required"
+            },
+            messages: {
+                domain: "Please enter a domain!"
+            },
+            submitHandler: function (form) {
+                form.submit();
+            }
+        });
+    })
+
+</script>
+<body>
+<div class="login-form">
+    <h1>Domain Form</h1>
+    <form method="post" name='addDomain' action="/addDomain" validate>
+        <div class="form-field">
+            <label for="domain">Domain</label>
+            <input class="input" id="domain" name="domain" type="text" value=""/>
+        </div>
+
+        <div class="form-actions">
+            <button class="btn btn-success submitButton" type="submit">Add</button>
+        </div>
+    </form>
+</div>
+</body>
