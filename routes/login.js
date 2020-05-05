@@ -1,5 +1,9 @@
-const express = require('express');
-const router = express.Router();
+var express = require('express');
+const MD5 = require('md5');
+var router = express.Router();
+const con = require('../Models/mysqlCon');
+const validator = require('express-validator');
+const toastr = require('express-toastr');
 
 
 router.get('/', function (req, res, next) {
@@ -10,14 +14,15 @@ router.get('/', function (req, res, next) {
 });
 
 router.post('/', function (req, res, next) {
-    if (!req.body.username || !req.body.password)
+    let {username, password} = req.body;
+    if (!username || !password)
         res.status(401).json({message: 'Parameters are missing'})
     else {
         try {
-            let username = req.body.username;
-            let password = req.body.password;
-            let encryptedPassword = MD5(password);
+            username = req.body.username;
+            password = req.body.password;
             try {
+                let encryptedPassword = MD5(password);
                 con.checkTableExists("user", function (result) {
                     if (result == 0) {
                         con.createTable({
@@ -57,7 +62,7 @@ router.post('/', function (req, res, next) {
 --------2. Check the password matches (The password must be encrypted)
         3. Save the user in the session.
      */
-    res.render('login', {title: 'Login'});
+    res.render('login', {title: 'Home', user: username});
 });
 
 module.exports = router;
